@@ -1,8 +1,9 @@
 
+const API_BASE = process.env.REACT_APP_API_URL || '/api';
 
 export const AddItemToServer=async(task,date)=>{
     try {
-        const response=await fetch('http://localhost:5000/api/todo',{
+        const response=await fetch(`${API_BASE}/todo`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -38,7 +39,7 @@ function mapServerItemToClientItem (serverItem){
 
 export const getItemsFromServer=async()=>{
     try {
-        const res=await fetch('http://localhost:5000/api/todo/getitem');
+        const res=await fetch(`${API_BASE}/todo/getitem`);
         const data=await res.json();
         return data.todoItem.map(mapServerItemToClientItem);
     } catch (error) {
@@ -49,7 +50,7 @@ export const getItemsFromServer=async()=>{
 
 export const MarkItemCompletedOnServer=async(id)=>{
     try {
-        const res =await fetch(`http://localhost:5000/api/todo/${id}/completed`,{
+        const res =await fetch(`${API_BASE}/todo/${id}/completed`,{
             method:'PUT'
         });
         const data=await res.json();
@@ -61,7 +62,7 @@ export const MarkItemCompletedOnServer=async(id)=>{
 
 export const DeletefromServer=async(id)=>{
     try {
-        const res=await fetch(`http://localhost:5000/api/todo/${id}`,{
+        const res=await fetch(`${API_BASE}/todo/${id}`,{
             method:'DELETE'
         });
         const data=await res.json();
@@ -74,7 +75,7 @@ export const DeletefromServer=async(id)=>{
 export const updateItemOnServer=async(id,updateItem)=>{
     try {
         console.log("Sending update request:", {id, updateItem}); // Debug log
-         const response=await fetch(`http://localhost:5000/api/todo/${id}/update`,{
+         const response=await fetch(`${API_BASE}/todo/${id}/update`,{
             method:'PUT',
             headers:{
                 'Content-Type':'application/json'
@@ -102,3 +103,4 @@ export const updateItemOnServer=async(id,updateItem)=>{
        
     
     }
+
