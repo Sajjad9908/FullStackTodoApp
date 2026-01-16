@@ -5,10 +5,10 @@
   "license": "ISC",
   "author": "sajjad",
   "type": "commonjs",
-    "main": "api/index.js",
+    "main": "index.js",
   "scripts": {
-     "start": "node api/index.js",
-     "dev": "nodemon api/index.js"
+     "start": "node index.js",
+     "dev": "nodemon index.js"
   },
   "dependencies": {
     "body-parser": "^2.2.2",

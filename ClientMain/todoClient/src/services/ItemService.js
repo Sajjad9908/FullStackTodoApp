@@ -66,7 +66,8 @@ export const DeletefromServer=async(id)=>{
             method:'DELETE'
         });
         const data=await res.json();
-        return data;                
+        // Server returns { message, id }, we need to return an object with id property
+        return { id: data.id || id };                
     } catch (error) {
         console.error("Error deleting item:", error);
         return null;
