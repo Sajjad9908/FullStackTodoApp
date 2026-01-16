@@ -12,7 +12,21 @@ app.use(cors());
 
 app.use('/api/todo',todoRouter);
 
-app.use( PageNotFoundError)
+// Health check route for root
+app.get('/', (req, res) => {
+    res.json({ ok: true, message: 'Backend is running' });
+});
+
+// Simple API base route
+app.get('/api', (req, res) => {
+    res.json({ ok: true, message: 'API is up', availableRoutes: ['/api/todo/getitem', 'POST /api/todo', 'PUT /api/todo/:id/completed', 'PUT /api/todo/:id/update', 'DELETE /api/todo/:id'] });
+});
+
+// 404 handler - must be last
+app.use((req, res) => {
+    console.log('404 Not Found:', req.method, req.url);
+    res.status(404).json({ error: 'Page Not Found', requestedUrl: req.url, method: req.method });
+});
 
 const connectDb=async()=>{
     try {
