@@ -5,25 +5,14 @@ const mongoose=require('mongoose');
 const todoRouter=require('./Router/TodoRouter');
 const {PageNotFoundError}=require('./conroller/error').default;
 const cors=require('cors');
-const path=require('path');
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors());
 
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, '../ClientMain/todoClient/dist')));
-
 app.use('/api/todo',todoRouter);
 
-// Serve React app for all other routes
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../ClientMain/todoClient/dist/index.html'));
-});
-
 app.use( PageNotFoundError)
-
-const Port=process.env.PORT || 5000;
 
 const connectDb=async()=>{
     try {
@@ -35,9 +24,17 @@ const connectDb=async()=>{
     }
 }
 
-app.listen(Port,async()=>{
-    await connectDb();
-   console.log(`Server is running on  http://localhost:${Port}`);
-   
-});
+// Connect to DB on startup
+connectDb();
+
+// Export for Vercel serverless
+module.exports = app;
+
+// For local development
+if (require.main === module) {
+    const Port = process.env.PORT || 5000;
+    app.listen(Port, () => {
+        console.log(`Server is running on http://localhost:${Port}`);
+    });
+}
 
